@@ -1,17 +1,43 @@
-import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import Esim from 'react-native-esim';
+import React, { useEffect, useState, useCallback } from 'react';
+import { StyleSheet, View, Text, Button } from 'react-native';
+import EsimManager, { EsimSetupResultStatus } from 'react-native-esim';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [supported, setSupported] = useState<boolean>();
 
-  React.useEffect(() => {
-    Esim.multiply(3, 7).then(setResult);
+  const supportStatus = supported ? 'Supported' : 'Not supported';
+
+  useEffect((): void => {
+    EsimManager.isEsimSupported().then(setSupported);
+  }, []);
+
+  const performSetup = useCallback((): void => {
+    EsimManager.setupEsim({ address: 'address.com' })
+      .then((result): void => {
+        console.log(result);
+        switch (result) {
+          case EsimSetupResultStatus.Unknown:
+            console.log('esim setup unknown');
+            break;
+          case EsimSetupResultStatus.Fail:
+            console.log('esim setup fail');
+            break;
+          case EsimSetupResultStatus.Success:
+            console.log('esim setup success');
+            break;
+        }
+      })
+      .catch((error): void => {
+        console.log(error);
+      });
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>
+        Support status: {supported === undefined ? 'Loading...' : supportStatus}
+      </Text>
+      <Button title="Setup" onPress={performSetup} />
     </View>
   );
 }

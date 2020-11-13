@@ -1,9 +1,25 @@
 import { NativeModules } from 'react-native';
 
-type EsimType = {
-  multiply(a: number, b: number): Promise<number>;
+const { RNESimManager } = NativeModules;
+
+export type EsimConfig = {
+  address: string;
+  confirmationCode?: string;
+  eid?: string;
+  iccid?: string;
+  matchingId?: string;
+  oid?: string;
 };
 
-const { Esim } = NativeModules;
+export enum EsimSetupResultStatus {
+  Unknown = 0,
+  Fail = 1,
+  Success = 2,
+}
 
-export default Esim as EsimType;
+type EsimManager = {
+  setupEsim(config: EsimConfig): Promise<EsimSetupResultStatus | never>;
+  isEsimSupported(): Promise<boolean | never>;
+};
+
+export default RNESimManager as EsimManager;
