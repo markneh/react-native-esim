@@ -1,6 +1,6 @@
 {
   "name": "react-native-esim",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "This package adds capabilities for react native app to add eSIM plans.",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
