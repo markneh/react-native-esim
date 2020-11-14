@@ -35,12 +35,12 @@ RCT_EXPORT_METHOD(setupEsim:(NSDictionary *)config
             request.matchingID = config[@"matchingId"];
             request.confirmationCode = config[@"confirmationCode"];
             
-            __block UIBackgroundTaskIdentifier backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
-                [plan addPlanWith:request
-                completionHandler:^(CTCellularPlanProvisioningAddPlanResult result) {
-                    resolve(@(CTCellularPlanProvisioningAddPlanResultFail));
-                    [[UIApplication sharedApplication] endBackgroundTask:backgroundTaskIdentifier];
-                }];
+            // The user may send your app to the background prior to finishing the eSIM installation. To ensure your app has an opportunity to execute the completion handler and get the installation result, perform the eSIM installation as a background task. To do so, call beginBackgroundTask(expirationHandler:) prior to calling addPlan(with:completionHandler:), then call endBackgroundTask(_:) inside the completion handler.
+            UIBackgroundTaskIdentifier backgroundTaskIdentifier = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{}];
+            
+            [plan addPlanWith:request completionHandler:^(CTCellularPlanProvisioningAddPlanResult result) {
+                resolve(@(result));
+                [[UIApplication sharedApplication] endBackgroundTask:backgroundTaskIdentifier];
             }];
         }
         
