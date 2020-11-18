@@ -2,7 +2,7 @@
 
 This package exposes iOS API to install eSIM plans. Android support is planned in the future.
 #### Warning: This API won't work without eSIM entitlement. You can read more about it [here](https://stackoverflow.com/a/60162323)
-#### Note: At the moment (iOS 14.2) there might a bug in iOS sdk which returns uknown result before eSIM setup completion. More about it [here](https://developer.apple.com/forums/thread/662001)
+#### Note: At the moment (iOS 14.2) there might a bug in iOS SDK which returns uknown result before eSIM setup completion. More about it [here](https://developer.apple.com/forums/thread/662001)
 
 ## Installation
 
@@ -53,16 +53,16 @@ EsimManager.isEsimSupported()
   })
   .catch((error) => {
     // you might get and error if app wasn't configured correctly
-    // or device iOS is lower than required minimum
+    // or device iOS version is lower than required minimum
   });
   
 const config = {
   address: "";
-  confirmationCode?: "";
-  eid?: "";
-  iccid?: "";
-  matchingId?: "";
-  oid?: "";
+  confirmationCode: "";
+  eid: "";
+  iccid: "";
+  matchingId: "";
+  oid: "";
 }
   
 EsimManager.setupEsim(config)
